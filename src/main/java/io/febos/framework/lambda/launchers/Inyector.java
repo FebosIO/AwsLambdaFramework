@@ -4,12 +4,12 @@
  * sin el permiso expreso y por escrito de Febos S.A.
  * La detección de un uso no autorizado puede acarrear el inicio de acciones legales.
  */
-package io.febos.framework.lambda.lanzadores;
+package io.febos.framework.lambda.launchers;
 
 import com.google.inject.AbstractModule;
-import io.febos.framework.lambda.FuncionLambda;
-import io.febos.framework.lambda.Respuesta;
-import io.febos.framework.lambda.Solicitud;
+import io.febos.framework.lambda.LambdaFunction;
+import io.febos.framework.lambda.Response;
+import io.febos.framework.lambda.Request;
 
 public class Inyector extends AbstractModule {
     private Class funcion;
@@ -18,21 +18,21 @@ public class Inyector extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(FuncionLambda.class).to(funcion);
-        bind(Solicitud.class).to(solicitud);
-        bind(Respuesta.class).to(respuesta);
+        bind(LambdaFunction.class).to(funcion);
+        bind(Request.class).to(solicitud);
+        bind(Response.class).to(respuesta);
     }
 
-    public void configurarFuncion(Class<? extends FuncionLambda> funcion){
+    public void configurarFuncion(Class<? extends LambdaFunction> funcion){
         System.out.println("funcion: "+funcion.getName());
         this.funcion=funcion;
     }
-    public void configurarSolicitud(Class<? extends Solicitud> solicitud){
+    public void configurarSolicitud(Class<? extends Request> solicitud){
         System.out.println("solicitud: "+funcion.getName());
         this.solicitud=solicitud;
     }
-    public void configurarRespuesta(Class<? extends Respuesta> respuesta){
-        System.out.println("respuesta: "+funcion.getName());
+    public void configurarRespuesta(Class<? extends Response> respuesta){
+        System.out.println("response: "+funcion.getName());
         this.respuesta=respuesta;
     }
 }

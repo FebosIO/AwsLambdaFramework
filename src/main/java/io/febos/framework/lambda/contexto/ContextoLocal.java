@@ -7,8 +7,8 @@
 package io.febos.framework.lambda.contexto;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import io.febos.framework.lambda.interceptores.IdentificadorDeAmbiente;
-import io.febos.framework.lambda.interceptores.IdentificadorDePais;
+import io.febos.framework.lambda.interceptors.IdentificadorDeAmbiente;
+import io.febos.framework.lambda.interceptors.IdentificadorDePais;
 
 public class ContextoLocal implements Contexto{
 

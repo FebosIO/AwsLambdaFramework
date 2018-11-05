@@ -9,9 +9,9 @@ package io.febos.framework.lambda;
 import cl.febos.lambda.dummy.FuncionA.SolicitudA;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.google.gson.Gson;
-import io.febos.framework.lambda.lanzadores.Lanzador;
-import io.febos.framework.lambda.lanzadores.LanzadorAws;
-import io.febos.framework.lambda.lanzadores.LanzadorLocal;
+import io.febos.framework.lambda.launchers.Launcher;
+import io.febos.framework.lambda.launchers.AwsLauncher;
+import io.febos.framework.lambda.launchers.LocalLauncher;
 import io.febos.util.StringUtil;
 import org.json.JSONObject;
 
@@ -19,22 +19,22 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class LanzadorPrincipal {
+public class MainLauncher {
     public static Gson GSON=new Gson();
     public void ejecucionCloud(InputStream inputStream, OutputStream outputStream, Context context) {
-        Lanzador lanzador=new LanzadorAws();
+        Launcher lanzador=new AwsLauncher();
         lanzador.ejecutar(inputStream,outputStream,context);
     }
 
-    public Respuesta ejecucionLocal(Solicitud solicitud){
-        Lanzador lanzador=new LanzadorLocal();
+    public Response ejecucionLocal(Request solicitud){
+        Launcher lanzador=new LocalLauncher();
         InputStream inputStream = StringUtil.instancia().stringEnInputStream(GSON.toJson(solicitud));
         ByteArrayOutputStream outputStream=new ByteArrayOutputStream();
         String solicitudOriginalComoString = GSON.toJson(solicitud);
         JSONObject solicitudOriginal = new JSONObject(solicitudOriginalComoString);
         lanzador.ejecutar(inputStream,outputStream,null);
         try {
-            return GSON.fromJson(new String(outputStream.toByteArray()),(Class<? extends Respuesta>) Class.forName(solicitudOriginal.getString("claseRespuesta")));
+            return GSON.fromJson(new String(outputStream.toByteArray()),(Class<? extends Response>) Class.forName(solicitudOriginal.getString("responseClass")));
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             throw new RuntimeException("ERROR");
@@ -45,12 +45,12 @@ public class LanzadorPrincipal {
 
     public static void main(String[] args) {
         SolicitudA req=new SolicitudA();
-        req.claseFuncion="cl.febos.lambda.dummy.FuncionA.FuncionA";
-        req.claseSolicitud="cl.febos.lambda.dummy.FuncionA.SolicitudA";
-        req.claseRespuesta="cl.febos.lambda.dummy.FuncionA.RespuestaA";
+        req.functionClass ="cl.febos.lambda.dummy.FuncionA.FuncionA";
+        req.requestClass ="cl.febos.lambda.dummy.FuncionA.SolicitudA";
+        req.responseClass ="cl.febos.lambda.dummy.FuncionA.RespuestaA";
         req.setPrueba("asdas");
 
-        Respuesta respuesta = new LanzadorPrincipal().ejecucionLocal(req);
+        Response respuesta = new MainLauncher().ejecucionLocal(req);
         System.out.println(GSON.toJson(respuesta));
 
 

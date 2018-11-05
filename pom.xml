@@ -3,40 +3,22 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.febos.frameworks</groupId>
-    <artifactId>lambda-framework</artifactId>
-    <version>1.0</version>
+    <artifactId>lambda</artifactId>
+    <version>0.1</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <dependency.locations.enabled>false</dependency.locations.enabled>
-        <febos.config.version>1</febos.config.version>
-        <febos.codigo.pais>io</febos.codigo.pais>
     </properties>
-    <name>Febos Global - Lambda Framwork</name>
-    <description>Encapsulación de una o mas funciones dentro de un mismo lambda</description>
+    <name>AWS Lambda Framework</name>
+    <description>Multi-endpoint lambda function framework</description>
     <url>www.febos.io</url>
     <organization>
         <name>Febos S.A.</name>
         <url>www.febos.io</url>
     </organization>
-    <distributionManagement>
-        <snapshotRepository>
-            <id>maven.febos.io</id>
-            <url>s3://maven.febos.io/snapshot</url>
-        </snapshotRepository>
-        <repository>
-            <id>maven.febos.io</id>
-            <url>s3://maven.febos.io/release</url>
-        </repository>
-    </distributionManagement>
-    <repositories>
-        <repository>
-            <id>maven.febos.io</id>
-            <url>s3://maven.febos.io/release</url>
-        </repository>
-    </repositories>
 
     <dependencies>
         <dependency>
@@ -72,18 +54,6 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20160810</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.febos.datos</groupId>
-            <artifactId>coleccion-datos</artifactId>
-            <version>1.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.febos.frameworks</groupId>
-            <artifactId>respuestas</artifactId>
-            <version>1.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

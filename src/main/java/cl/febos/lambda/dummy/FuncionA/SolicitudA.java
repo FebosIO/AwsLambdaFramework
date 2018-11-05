@@ -1,10 +1,10 @@
 package cl.febos.lambda.dummy.FuncionA;
 
-import io.febos.framework.lambda.Solicitud;
+import io.febos.framework.lambda.Request;
 import javax.inject.Singleton;
 
 @Singleton
-public class SolicitudA extends Solicitud {
+public class SolicitudA extends Request {
     private String prueba;
 
     public String getPrueba() {

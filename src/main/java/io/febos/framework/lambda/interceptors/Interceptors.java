@@ -1,4 +1,4 @@
-package io.febos.framework.lambda.interceptores;
+package io.febos.framework.lambda.interceptors;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,6 +7,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface Interceptores {
-    Interceptar[] value();
+public @interface Interceptors {
+    Intercept[] value();
 }

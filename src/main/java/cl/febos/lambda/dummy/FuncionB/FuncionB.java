@@ -1,17 +1,17 @@
 package cl.febos.lambda.dummy.FuncionB;
 
-import io.febos.framework.lambda.FuncionLambda;
+import io.febos.framework.lambda.LambdaFunction;
 import javax.inject.Singleton;
 
 @Singleton
-public class FuncionB extends FuncionLambda<SolicitudB, RespuestaB> {
+public class FuncionB extends LambdaFunction<SolicitudB, RespuestaB> {
 
     public FuncionB(){
         super(SolicitudB.class,RespuestaB.class);
     }
 
     @Override
-    public RespuestaB ejecutar(SolicitudB request) {
+    public RespuestaB execute(SolicitudB request) {
         System.out.println("Ejecucion Lambda B: "+request.getLolo() );
         return new RespuestaB();
     }
