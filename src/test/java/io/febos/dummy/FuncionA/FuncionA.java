@@ -1,11 +1,13 @@
 package io.febos.dummy.FuncionA;
 
 import io.febos.framework.lambda.interceptors.impl.Chronometer;
+import io.febos.framework.lambda.interceptors.impl.db.ConnectionDb;
 import io.febos.framework.lambda.shared.LambdaFunction;
 import io.febos.framework.lambda.interceptors.*;
 
 
 @Intercept(clazz = Chronometer.class)
+@Intercept(clazz = ConnectionDb.class)
 public class FuncionA extends LambdaFunction<SolicitudA, RespuestaA> {
 
     public FuncionA() {

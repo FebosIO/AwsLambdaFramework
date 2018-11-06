@@ -17,6 +17,7 @@ public class FunctionHolder {
     public static void close() {
         if (FunctionHolder.INSTANCE.threads.get(Thread.currentThread().getName()) != null) {
             FunctionHolder.INSTANCE.threads.remove(Thread.currentThread().getName());
+            System.gc();
         }
     }
 
