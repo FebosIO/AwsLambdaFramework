@@ -1,4 +1,4 @@
-package io.febos.framework.lambda;
+package io.febos.framework.lambda.shared;
 
 public abstract class LambdaFunction<T extends Request,U extends Response> {
     private Class T;

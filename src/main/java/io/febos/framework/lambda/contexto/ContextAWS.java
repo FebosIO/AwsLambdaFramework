@@ -8,5 +8,9 @@ package io.febos.framework.lambda.contexto;
 
 import com.amazonaws.services.lambda.runtime.Context;
 
-public interface Contexto {
+public class ContextAWS implements Contexto {
+    public ContextAWS(Context context) {
+
+    }
+
 }
