@@ -8,28 +8,9 @@ package io.febos.framework.lambda.contexto;
 
 import com.amazonaws.services.lambda.runtime.Context;
 
-public class ContextoAws implements Contexto{
-    public ContextoAws(Context context){
+public class ContextLocal implements Contexto{
 
-    }
+    public ContextLocal(Context context){
 
-    @Override
-    public String codigoPais() {
-        return null;
-    }
-
-    @Override
-    public String ambiente() {
-        return null;
-    }
-
-    @Override
-    public String codigoPermiso() {
-        return null;
-    }
-
-    @Override
-    public Context aws() {
-        return null;
     }
 }

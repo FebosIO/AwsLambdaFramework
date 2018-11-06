@@ -1,6 +1,6 @@
-package cl.febos.lambda.dummy.FuncionB;
+package io.febos.dummy.FuncionB;
 
-import io.febos.framework.lambda.Request;
+import io.febos.framework.lambda.shared.Request;
 import javax.inject.Singleton;
 
 @Singleton
