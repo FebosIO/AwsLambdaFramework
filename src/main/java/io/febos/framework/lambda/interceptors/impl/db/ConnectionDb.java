@@ -14,14 +14,12 @@ import java.util.Set;
 public class ConnectionDb implements PreInterceptor, PostInterceptor {
     private static Class<? extends DbConector> conectorClass = DefaultConector.class;
 
-
     static {
         Reflections scanner = new Reflections("io.febos.config");
         Set<Class<? extends DbConector>> configClass =scanner.getSubTypesOf(DbConector.class);
         if(configClass.iterator().hasNext()){
             conectorClass=configClass.iterator().next();
         }
-
     }
 
     private final DbConector conector;

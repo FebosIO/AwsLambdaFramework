@@ -50,13 +50,11 @@ public class LambdaException extends RuntimeException {
             this.fields = fields;
         }
 
-        @Override
         public boolean shouldSkipField(FieldAttributes f) {
             if (Arrays.binarySearch(fields, f.getName()) >= 0) return true;
             return false;
         }
 
-        @Override
         public boolean shouldSkipClass(Class<?> clazz) {
             return false;
         }
