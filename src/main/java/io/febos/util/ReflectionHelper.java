@@ -1,7 +1,5 @@
 package io.febos.util;
 
-import sun.security.util.Debug;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -10,6 +8,7 @@ import java.util.Enumeration;
 import java.util.List;
 
 public class ReflectionHelper {
+
 
     public static List<Class<?>> findClassesImpmenenting(final Class<?> interfaceClass, final Package fromPackage) {
 
@@ -30,24 +29,19 @@ public class ReflectionHelper {
                 for (Class<?> aTarget : targets) {
                     if (aTarget == null) {
                         continue;
-                    }
-                    else if (aTarget.equals(interfaceClass)) {
+                    } else if (aTarget.equals(interfaceClass)) {
                         continue;
-                    }
-                    else if (!interfaceClass.isAssignableFrom(aTarget)) {
+                    } else if (!interfaceClass.isAssignableFrom(aTarget)) {
                         continue;
-                    }
-                    else {
+                    } else {
                         rVal.add(aTarget);
                     }
                 }
             }
-        }
-        catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) {
             System.out.println("Error reading package name.");
             e.printStackTrace();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             System.out.println("Error reading classes in package.");
             e.printStackTrace();
         }
@@ -98,8 +92,7 @@ public class ReflectionHelper {
             if (file.isDirectory()) {
                 assert !file.getName().contains(".");
                 classes.addAll(findClasses(file, packageName + "." + file.getName()));
-            }
-            else if (file.getName().endsWith(".class")) {
+            } else if (file.getName().endsWith(".class")) {
                 classes.add(Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
             }
         }

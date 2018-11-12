@@ -6,27 +6,22 @@ import io.febos.framework.lambda.interceptors.PostInterceptor;
 import io.febos.framework.lambda.interceptors.PreInterceptor;
 import io.febos.framework.lambda.shared.FunctionHolder;
 import io.febos.util.ReflectionHelper;
+import org.reflections.Reflections;
 
 import java.util.List;
+import java.util.Set;
 
 public class ConnectionDb implements PreInterceptor, PostInterceptor {
     private static Class<? extends DbConector> conectorClass = DefaultConector.class;
 
 
     static {
-        Package[] ps = Package.getPackages();
-        findClassConectionLoop:
-        for (Package p : ps) {
-            List<Class<?>> clases = ReflectionHelper.findClassesImpmenenting(DbConector.class, p);
-            if (clases != null && clases.size() > 0) {
-                for (int i = 0; i < clases.size(); i++) {
-                    if (!clases.get(i).getTypeName().equals(DefaultConector.class.getTypeName())) {
-                        conectorClass = (Class<? extends DbConector>) clases.get(i);
-                        break findClassConectionLoop;
-                    }
-                }
-            }
+        Reflections scanner = new Reflections("io.febos.config");
+        Set<Class<? extends DbConector>> configClass =scanner.getSubTypesOf(DbConector.class);
+        if(configClass.iterator().hasNext()){
+            conectorClass=configClass.iterator().next();
         }
+
     }
 
     private final DbConector conector;

@@ -1,6 +1,8 @@
-package io.febos.framework.lambda.interceptors.impl.db;
+package io.febos.config;
 
-class CustomConector implements DbConector {
+import io.febos.framework.lambda.interceptors.impl.db.DbConector;
+
+public class CustomConector implements DbConector {
     private static String hostDb;
     private static String user;
     private static String pass;
