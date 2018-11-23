@@ -51,9 +51,10 @@ public abstract class Launcher {
         try {
             String respuestaComoString = "{}";
             try {
-                loadOriginalRequest(inputStream);
-                prepararInyeccionesDeDependencias();
                 initContext(context);
+                loadOriginalRequest(inputStream);
+                FunctionHolder.getInstance().context(context);
+                prepararInyeccionesDeDependencias();
                 LambdaFunction funcion = injector.getInstance(LambdaFunction.class);
                 loadInterceptors(funcion.getClass());
                 FunctionHolder.getInstance().request(GSON.fromJson(originalRequestAsString, injector.getInstance(Request.class).getClass()));

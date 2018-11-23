@@ -1,5 +1,7 @@
 package io.febos.framework.lambda.shared;
 
+import com.amazonaws.services.lambda.runtime.Context;
+
 import java.util.concurrent.ConcurrentHashMap;
 
 public class FunctionHolder {
@@ -54,6 +56,16 @@ public class FunctionHolder {
 
         public void response(Response response) {
             values.put("response", response);
+        }
+
+        public void context(Context contexto) {
+            try {
+                values.put("contexto", contexto);
+            }catch (NullPointerException e){}
+        }
+
+        public Context context() {
+            return (Context) values.get("contexto");
         }
 
 
