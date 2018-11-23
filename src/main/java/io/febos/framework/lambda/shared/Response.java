@@ -5,6 +5,10 @@ public interface Response {
 
     public void duration(long duration);
 
+    public String message();
+
+    public void message(String messaje);
+
     public int code();
 
     public void code(int code);

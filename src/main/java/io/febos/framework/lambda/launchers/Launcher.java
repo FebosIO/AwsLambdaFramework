@@ -67,7 +67,7 @@ public abstract class Launcher {
                 FunctionHolder.getInstance().response(e.getResponse());
             } catch (Exception e) {
                 e.printStackTrace();
-                LambdaException ex = new LambdaException("CRITIC ERROR ", e);
+                LambdaException ex = LambdaException.getErrorResponse("CRITIC ERROR ", e);
                 ex.addError(e.getMessage());
                 FunctionHolder.getInstance().response(ex.getResponse());
             } finally {

@@ -1,5 +1,6 @@
 package io.febos.framework.lambda.interceptors.impl.db;
 
+import io.febos.framework.lambda.excepcion.ErrorResponse;
 import io.febos.framework.lambda.excepcion.LambdaException;
 import io.febos.framework.lambda.excepcion.LambdaInitException;
 import io.febos.framework.lambda.interceptors.PostInterceptor;
@@ -40,7 +41,7 @@ public class ConnectionDb implements PreInterceptor, PostInterceptor {
 
     @Override
     public void executePostInterceptor() {
-        if (FunctionHolder.getInstance().response() instanceof LambdaException.ErrorResponse) {
+        if (FunctionHolder.getInstance().response() instanceof ErrorResponse) {
             //call error end
             conector.onError();
         }
