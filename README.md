@@ -10,3 +10,6 @@ which requires having the following environment variables:
 Modifying the default connector requires assigning the environment variable
 **class_conector_db** EJ: **io.febos.framework.lambda.interceptors.impl.db.DefaultConector**
 which should extend from **io.febos.framework.lambda.interceptors.impl.db.DbConector** inteface
+
+
+para modificar las clases de respuesta se usa mismo truco que en coneccion
