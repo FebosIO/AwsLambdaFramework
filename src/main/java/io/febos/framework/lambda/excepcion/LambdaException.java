@@ -30,7 +30,7 @@ public class LambdaException extends RuntimeException {
     protected ErrorResponse response;
 
     protected LambdaException() {
-        response = new ErrorResponse();
+        response = getErrorInstance("ERROR");
     }
 
     public LambdaException(ErrorResponse response) {
@@ -39,8 +39,15 @@ public class LambdaException extends RuntimeException {
 
     public LambdaException(String menssage, Throwable e) {
         super(menssage, e);
-        this.response = new ErrorResponse();
+        this.response = getErrorInstance(menssage);
         ((ErrorResponse) this.response).message = menssage;
+    }
+
+    public LambdaException(String menssage, int code, Throwable e) {
+        super(menssage, e);
+        this.response = getErrorInstance(menssage);
+        this.response.code(code);
+        ((ErrorResponse) this.response).message(menssage);
     }
 
 
@@ -90,6 +97,21 @@ public class LambdaException extends RuntimeException {
         }
         response.message(message);
         return new LambdaException(response);
+    }
+
+    public static ErrorResponse getErrorInstance(String message) {
+        ErrorResponse response;
+        try {
+            response = errorClass.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+            response = new ErrorResponse(message);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            response = new ErrorResponse(message);
+        }
+        response.message(message);
+        return response;
     }
 
     public static LambdaException getErrorResponse(String mensaje, Exception e) {

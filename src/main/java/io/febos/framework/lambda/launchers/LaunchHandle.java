@@ -31,6 +31,7 @@ public class LaunchHandle {
         lanzador.execute(inputStream, outputStream, null);
         try {
             String responseasString = new String(outputStream.toByteArray());
+            System.out.println("RESPUESTA EN DURO   "+responseasString);
             return GSON.fromJson(responseasString, (Class<? extends Response>) Class.forName(solicitudOriginal.getString("responseClass")));
         } catch (ClassNotFoundException e) {
             e.printStackTrace();

@@ -67,7 +67,7 @@ public abstract class Launcher {
                 FunctionHolder.getInstance().response(e.getResponse());
             } catch (Exception e) {
                 e.printStackTrace();
-                LambdaException ex = LambdaException.getErrorResponse("CRITIC ERROR ", e);
+                LambdaException ex = new LambdaException("ERROR_CRITICO", e);
                 ex.addError(e.getMessage());
                 FunctionHolder.getInstance().response(ex.getResponse());
             } finally {
@@ -167,9 +167,13 @@ public abstract class Launcher {
     }
 
     protected void executePostInterceptors() {
-        Collections.reverse(postInterceptors);
-        for (PostInterceptor interceptor : postInterceptors) {
-            interceptor.executePostInterceptor();
+        try {
+            Collections.reverse(postInterceptors);
+            for (PostInterceptor interceptor : postInterceptors) {
+                interceptor.executePostInterceptor();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
