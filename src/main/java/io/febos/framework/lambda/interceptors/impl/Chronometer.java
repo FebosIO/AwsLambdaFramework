@@ -18,8 +18,9 @@ public class Chronometer implements PreInterceptor, PostInterceptor {
     public void executePostInterceptor() {
         long duracion = new Date().getTime();
         try {
-            FunctionHolder.getInstance().response().duration = duracion - inicio;
-        }catch (Exception e){}
+            FunctionHolder.getInstance().response().duration(duracion - inicio);
+        } catch (Exception e) {
+        }
 
     }
 
