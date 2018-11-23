@@ -1,7 +1,6 @@
 package io.febos.framework.lambda.launchers;
 
 import com.amazonaws.services.lambda.runtime.Context;
-
 import com.google.gson.Gson;
 import io.febos.framework.lambda.launchers.impl.AwsLauncher;
 import io.febos.framework.lambda.launchers.impl.LocalLauncher;
@@ -31,7 +30,9 @@ public class LaunchHandle {
         JSONObject solicitudOriginal = new JSONObject(solicitudOriginalComoString);
         lanzador.execute(inputStream, outputStream, null);
         try {
-            return GSON.fromJson(new String(outputStream.toByteArray()), (Class<? extends Response>) Class.forName(solicitudOriginal.getString("responseClass")));
+            String responseasString = new String(outputStream.toByteArray());
+            System.out.println("RESPUESTA EN DURO   "+responseasString);
+            return GSON.fromJson(responseasString, (Class<? extends Response>) Class.forName(solicitudOriginal.getString("responseClass")));
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             throw new RuntimeException("ERROR");

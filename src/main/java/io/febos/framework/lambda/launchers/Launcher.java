@@ -11,17 +11,17 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import io.febos.framework.lambda.contexto.Contexto;
 import io.febos.framework.lambda.contexto.ContextAWS;
+import io.febos.framework.lambda.contexto.Contexto;
 import io.febos.framework.lambda.excepcion.LambdaException;
-import io.febos.framework.lambda.shared.FunctionHolder;
-import io.febos.framework.lambda.shared.LambdaFunction;
-import io.febos.framework.lambda.shared.Response;
-import io.febos.framework.lambda.shared.Request;
 import io.febos.framework.lambda.excepcion.LambdaInitException;
 import io.febos.framework.lambda.interceptors.Intercept;
 import io.febos.framework.lambda.interceptors.PostInterceptor;
 import io.febos.framework.lambda.interceptors.PreInterceptor;
+import io.febos.framework.lambda.shared.FunctionHolder;
+import io.febos.framework.lambda.shared.LambdaFunction;
+import io.febos.framework.lambda.shared.Request;
+import io.febos.framework.lambda.shared.Response;
 import io.febos.util.StringUtil;
 import org.json.JSONObject;
 
@@ -51,12 +51,14 @@ public abstract class Launcher {
         try {
             String respuestaComoString = "{}";
             try {
-                loadOriginalRequest(inputStream);
-                prepararInyeccionesDeDependencias();
                 initContext(context);
+                loadOriginalRequest(inputStream);
+                FunctionHolder.getInstance().context(context);
+                prepararInyeccionesDeDependencias();
                 LambdaFunction funcion = injector.getInstance(LambdaFunction.class);
                 loadInterceptors(funcion.getClass());
                 FunctionHolder.getInstance().request(GSON.fromJson(originalRequestAsString, injector.getInstance(Request.class).getClass()));
+                FunctionHolder.getInstance().put("requestAsJsonObject", originalRequest);
                 executePreInterceptors();
                 FunctionHolder.getInstance().response(funcion.execute(FunctionHolder.getInstance().request()));
             } catch (LambdaException e) {
@@ -65,7 +67,7 @@ public abstract class Launcher {
                 FunctionHolder.getInstance().response(e.getResponse());
             } catch (Exception e) {
                 e.printStackTrace();
-                LambdaException ex = new LambdaException("CRITIC ERROR ", e);
+                LambdaException ex = new LambdaException("ERROR_CRITICO", e);
                 ex.addError(e.getMessage());
                 FunctionHolder.getInstance().response(ex.getResponse());
             } finally {
@@ -134,7 +136,7 @@ public abstract class Launcher {
     }
 
     private void addPreInterceptor(Class<? extends PreInterceptor> clazz) throws IllegalAccessException, InstantiationException {
-        preInterceptors.add( clazz.newInstance());
+        preInterceptors.add(clazz.newInstance());
     }
 
     private void addPostInterceptor(Class<? extends PostInterceptor> clase) throws IllegalAccessException, InstantiationException {
@@ -165,9 +167,13 @@ public abstract class Launcher {
     }
 
     protected void executePostInterceptors() {
-        Collections.reverse(postInterceptors);
-        for (PostInterceptor interceptor : postInterceptors) {
-            interceptor.executePostInterceptor();
+        try {
+            Collections.reverse(postInterceptors);
+            for (PostInterceptor interceptor : postInterceptors) {
+                interceptor.executePostInterceptor();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

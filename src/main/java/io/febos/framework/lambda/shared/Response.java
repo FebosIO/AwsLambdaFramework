@@ -1,15 +1,21 @@
 package io.febos.framework.lambda.shared;
 
-import java.util.ArrayList;
-import java.util.List;
+public interface Response {
+    public long duration();
 
-public abstract class Response {
-    public long duration;
+    public void duration(long duration);
 
-    public Response() {
-        this.tracingId = Thread.currentThread().getName();
-    }
+    public String message();
 
-    public String tracingId;
+    public void message(String messaje);
+
+    public int code();
+
+    public void code(int code);
+
+    public String tracingId();
+
+    public void tracingId(String tracingId);
+
 
 }
