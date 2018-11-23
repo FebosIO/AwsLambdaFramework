@@ -1,7 +1,5 @@
 package io.febos.framework.lambda.shared;
 
-import io.febos.framework.lambda.launchers.Inyector;
-
 import java.util.concurrent.ConcurrentHashMap;
 
 public class FunctionHolder {
@@ -9,9 +7,19 @@ public class FunctionHolder {
 
     private static final FunctionHolder INSTANCE = new FunctionHolder();
     private final ConcurrentHashMap<String, ConcurrentValues> threads = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, Object> config = new ConcurrentHashMap<>();
+
 
     public static ConcurrentValues getInstance() {
         return FunctionHolder.INSTANCE.thread();
+    }
+
+    public static Object getConfig(String key) {
+        return config.get(key);
+    }
+
+    public static void putConfig(String key, Object val) {
+        config.put(key, val);
     }
 
     public static void close() {

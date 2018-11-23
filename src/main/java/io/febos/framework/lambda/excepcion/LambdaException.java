@@ -17,7 +17,11 @@ import java.util.List;
  * @author Michel Munoz <michel@febos.cl>
  */
 public class LambdaException extends RuntimeException {
-    private final ErrorResponse response;
+    protected ErrorResponse response;
+
+    protected LambdaException() {
+        response = new ErrorResponse();
+    }
 
     public LambdaException(ErrorResponse response) {
         this.response = response;
@@ -39,8 +43,9 @@ public class LambdaException extends RuntimeException {
         return response;
     }
 
-    public void addError(String message) {
+    public LambdaException addError(String message) {
         this.response.errores.add(message);
+        return this;
     }
 
     public class JsonExludeFields implements ExclusionStrategy {
@@ -66,5 +71,11 @@ public class LambdaException extends RuntimeException {
         public String message;
         public List<String> errores = new ArrayList<>();
 
+        public ErrorResponse() {
+        }
+
+        public ErrorResponse(String message) {
+            this.message = message;
+        }
     }
 }
