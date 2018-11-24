@@ -1,7 +1,7 @@
 
 # AwsLambdaFramework
 ![ALF](https://www.diariodejerez.es/2018/08/02/television/extraterrestre-Alf-regresara-television-version_1269183655_87631852_667x375.jpg)
-Also know as ALF, our little and very lightwight framework to handle lambdas on AWS. Allows you treat many Handlers as you want, inject interceptors (or filters) before the request to manage database connections,  do some business validations or whatever you want, even you can intercept responses to attach more data to them or do some transformations.
+Also know as ALF, is our little and very lightwight framework to handle lambdas on AWS. Allows you treat many Handlers as you want, inject interceptors (or filters) before the request to manage database connections,  do some business validations or whatever you want, even you can intercept responses to attach more data to them or do some transformations.
 
 ---
 ### Why ALF?
