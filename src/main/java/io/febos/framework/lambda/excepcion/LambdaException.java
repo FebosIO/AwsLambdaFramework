@@ -84,21 +84,6 @@ public class LambdaException extends RuntimeException {
 
     }
 
-    public static LambdaException getErrorResponse(String message) {
-        ErrorResponse response;
-        try {
-            response = errorClass.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-            response = new ErrorResponse(message);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            response = new ErrorResponse(message);
-        }
-        response.message(message);
-        return new LambdaException(response);
-    }
-
     public static ErrorResponse getErrorInstance(String message) {
         ErrorResponse response;
         try {

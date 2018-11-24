@@ -6,13 +6,11 @@
  */
 package io.febos.framework.lambda.launchers;
 
-import com.amazonaws.services.lambda.runtime.Context;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.inject.Guice;
-import com.google.inject.Injector;
-import io.febos.framework.lambda.contexto.ContextAWS;
-import io.febos.framework.lambda.contexto.Contexto;
+import io.febos.framework.lambda.context.ContextAWS;
+import io.febos.framework.lambda.context.Context;
 import io.febos.framework.lambda.excepcion.LambdaException;
 import io.febos.framework.lambda.excepcion.LambdaInitException;
 import io.febos.framework.lambda.interceptors.Intercept;
@@ -32,11 +30,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public abstract class Launcher {
-    public Contexto contexto;
+    public Context context;
 
     public static JSONObject originalRequest;
     public static String originalRequestAsString;
-    public static Injector injector = null;
+    public static com.google.inject.Injector injector = null;
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     public static List<PreInterceptor> preInterceptors;
     public static List<PostInterceptor> postInterceptors;
@@ -47,35 +45,34 @@ public abstract class Launcher {
         renameThread();
     }
 
-    public void execute(InputStream inputStream, OutputStream outputStream, Context context) {
+    public void execute(InputStream inputStream, OutputStream outputStream, com.amazonaws.services.lambda.runtime.Context context) {
         try {
-            String respuestaComoString = "{}";
+            String responseAsString = "{}";
             try {
                 initContext(context);
                 loadOriginalRequest(inputStream);
                 FunctionHolder.getInstance().context(context);
-                prepararInyeccionesDeDependencias();
-                LambdaFunction funcion = injector.getInstance(LambdaFunction.class);
-                loadInterceptors(funcion.getClass());
+                prepareDependencyInjection();
+                LambdaFunction function = injector.getInstance(LambdaFunction.class);
+                loadInterceptors(function.getClass());
                 FunctionHolder.getInstance().request(GSON.fromJson(originalRequestAsString, injector.getInstance(Request.class).getClass()));
                 FunctionHolder.getInstance().put("requestAsJsonObject", originalRequest);
                 executePreInterceptors();
-                FunctionHolder.getInstance().response(funcion.execute(FunctionHolder.getInstance().request()));
+                FunctionHolder.getInstance().response(function.execute(FunctionHolder.getInstance().request()));
             } catch (LambdaException e) {
-                //ERRORES CONTROLADOS
                 e.printStackTrace();
                 FunctionHolder.getInstance().response(e.getResponse());
             } catch (Exception e) {
                 e.printStackTrace();
-                LambdaException ex = new LambdaException("ERROR_CRITICO", e);
+                LambdaException ex = new LambdaException("CRITICAL_ERROR", e);
                 ex.addError(e.getMessage());
                 FunctionHolder.getInstance().response(ex.getResponse());
             } finally {
                 executePostInterceptors();
-                respuestaComoString = GSON.toJson(FunctionHolder.getInstance().response());
+                responseAsString = GSON.toJson(FunctionHolder.getInstance().response());
             }
             try {
-                outputStream.write(respuestaComoString.getBytes(StandardCharsets.UTF_8));
+                outputStream.write(responseAsString.getBytes(StandardCharsets.UTF_8));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -85,31 +82,31 @@ public abstract class Launcher {
     }
 
     protected void loadOriginalRequest(InputStream inputStream) {
-        originalRequestAsString = StringUtil.instancia().inputStreamEnString(inputStream);
+        originalRequestAsString = StringUtil.instance().inputStreamToString(inputStream);
         originalRequest = new JSONObject(originalRequestAsString);
     }
 
-    protected void prepararInyeccionesDeDependencias() {
-        if (Inyector.getInyectors().get(originalRequest.getString("functionClass").trim()) == null) {
+    protected void prepareDependencyInjection() {
+        if (CustomInjector.getInyectors().get(originalRequest.getString("functionClass").trim()) == null) {
             try {
-                Inyector u = new Inyector();
-                u.configurarFuncion((Class<? extends LambdaFunction>) Class.forName(originalRequest.getString("functionClass")));
-                u.configurarSolicitud((Class<? extends Request>) Class.forName(originalRequest.getString("requestClass")));
-                u.configurarRespuesta((Class<? extends Response>) Class.forName(originalRequest.getString("responseClass")));
-                Inyector.getInyectors().put(originalRequest.getString("functionClass").trim(), Guice.createInjector(u));
+                CustomInjector u = new CustomInjector();
+                u.configureFunction((Class<? extends LambdaFunction>) Class.forName(originalRequest.getString("functionClass")));
+                u.configureRequest((Class<? extends Request>) Class.forName(originalRequest.getString("requestClass")));
+                u.configureResponse((Class<? extends Response>) Class.forName(originalRequest.getString("responseClass")));
+                CustomInjector.getInyectors().put(originalRequest.getString("functionClass").trim(), Guice.createInjector(u));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        injector = Inyector.getInyectors().get(originalRequest.getString("functionClass"));
+        injector = CustomInjector.getInyectors().get(originalRequest.getString("functionClass"));
     }
 
     protected void changeClasses() {
         try {
-            Inyector u = new Inyector();
-            u.configurarFuncion((Class<? extends LambdaFunction>) Class.forName(originalRequest.getString("functionClass")));
-            u.configurarSolicitud((Class<? extends Request>) Class.forName(originalRequest.getString("requestClass")));
-            u.configurarRespuesta((Class<? extends Response>) Class.forName(originalRequest.getString("responseClass")));
+            CustomInjector u = new CustomInjector();
+            u.configureFunction((Class<? extends LambdaFunction>) Class.forName(originalRequest.getString("functionClass")));
+            u.configureRequest((Class<? extends Request>) Class.forName(originalRequest.getString("requestClass")));
+            u.configureResponse((Class<? extends Response>) Class.forName(originalRequest.getString("responseClass")));
             injector = Guice.createInjector(u);
         } catch (Exception e) {
             e.printStackTrace();
@@ -181,7 +178,7 @@ public abstract class Launcher {
         Thread.currentThread().setName(UUID.randomUUID().toString());
     }
 
-    protected void initContext(Context context) {
-        contexto = new ContextAWS(context);
+    protected void initContext(com.amazonaws.services.lambda.runtime.Context context) {
+        this.context = new ContextAWS(context);
     }
 }

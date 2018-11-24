@@ -5,8 +5,6 @@ import io.febos.dummy.FuncionA.SolicitudA;
 import io.febos.framework.lambda.shared.Response;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 public class LaunchHandleTest {
     public static Gson GSON = new Gson();
 
@@ -18,7 +16,7 @@ public class LaunchHandleTest {
         req.responseClass = "io.febos.dummy.FuncionA.RespuestaA";
         req.setPrueba("asdas");
 
-        Response respuesta = new LaunchHandle().ejecutar(req);
+        Response respuesta = new LaunchHandler().execute(req);
         System.out.println(GSON.toJson(respuesta));
     }
 }

@@ -7,14 +7,14 @@
 package io.febos.framework.lambda.launchers.impl;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import io.febos.framework.lambda.contexto.ContextLocal;
+import io.febos.framework.lambda.context.ContextLocal;
 import io.febos.framework.lambda.launchers.Launcher;
 
 public class LocalLauncher extends Launcher {
 
     @Override
     protected void initContext(Context context) {
-        contexto = new ContextLocal(context);
+        this.context = new ContextLocal(context);
     }
 
 

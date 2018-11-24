@@ -1,50 +1,47 @@
 package io.febos.framework.lambda.interceptors.impl.db;
 
 import io.febos.framework.lambda.excepcion.ErrorResponse;
-import io.febos.framework.lambda.excepcion.LambdaException;
 import io.febos.framework.lambda.excepcion.LambdaInitException;
 import io.febos.framework.lambda.interceptors.PostInterceptor;
 import io.febos.framework.lambda.interceptors.PreInterceptor;
 import io.febos.framework.lambda.shared.FunctionHolder;
-import io.febos.util.ReflectionHelper;
 import org.reflections.Reflections;
 
-import java.util.List;
 import java.util.Set;
 
 public class ConnectionDb implements PreInterceptor, PostInterceptor {
-    private static Class<? extends DbConector> conectorClass = DefaultConector.class;
+    private static Class<? extends DatabaseConnection> connectorClass = DefaultDatabaseConnection.class;
 
     static {
         Reflections scanner = new Reflections("io.febos.config");
-        Set<Class<? extends DbConector>> configClass =scanner.getSubTypesOf(DbConector.class);
+        Set<Class<? extends DatabaseConnection>> configClass =scanner.getSubTypesOf(DatabaseConnection.class);
         if(configClass.iterator().hasNext()){
-            conectorClass=configClass.iterator().next();
+            connectorClass =configClass.iterator().next();
         }
     }
 
-    private final DbConector conector;
+    private final DatabaseConnection connector;
 
     public ConnectionDb() {
         try {
-            conector = conectorClass.newInstance();
+            connector = connectorClass.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
-            throw new LambdaInitException("Error al iniciar conector de la base de datos", e);
+            throw new LambdaInitException("Error initializing db connection", e);
         }
     }
 
     @Override
     public void executePreInterceptor() {
-        conector.conect();
+        connector.connect();
     }
 
     @Override
     public void executePostInterceptor() {
         if (FunctionHolder.getInstance().response() instanceof ErrorResponse) {
             //call error end
-            conector.onError();
+            connector.onError();
         }
-        conector.close();
+        connector.close();
     }
 }

@@ -13,18 +13,18 @@ FaaS is a cool improvement on how we develop applications. We forget all our fig
 3.  **Interceptors**, we love to automate things, and Lambdas in native mode is struggle to do that. With interceptors we can automate almost all business validations without touching the function logic itself, it all occurs outside, in the interceptors.
 
 ### Managing database connections
-To connect your lambdas to a database, you must set the following environment variables (this is when you use the default connection manager: **DefaultConnector**)
+To connect your lambdas to a database, you must set the following environment variables (this is when you use the default connection manager: **DefaultDatabaseConnection**)
 
-* conector_db_host  
-* conector_db_user 
-* conector_db_pass 
-* conector_db_driver // package and class of the driver
+* db_host  
+* db_user 
+* db_pass 
+* db_driver // package and class of the driver
 
-If you want to use your own class to manage database connections, which should extend from **io.febos.framework.lambda.interceptors.impl.db.DbConector** interface, you need to set up an additional environment variable:
+If you want to use your own class to manage database connections, which should extend from **io.febos.framework.lambda.interceptors.impl.db.DatabaseConnection** interface, you need to set up an additional environment variable:
 
-* class_conector_db
+* class_db_connector
 
-If not set, the default value is `io.febos.framework.lambda.interceptors.impl.db.DefaultConector`, which is the default class of the framework to handle database connections.
+If not set, the default value is `io.febos.framework.lambda.interceptors.impl.db.DefaultConnection`, which is the default class of the framework to handle database connections.
 
 ### Customizing Request and Response classes
 Sometimes you want to add specific fields to all your request (like a token) and responses (like a message or code response), in that cases you must create your clases implementing the following interfaces:

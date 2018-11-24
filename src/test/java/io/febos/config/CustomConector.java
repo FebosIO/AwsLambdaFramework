@@ -1,8 +1,8 @@
 package io.febos.config;
 
-import io.febos.framework.lambda.interceptors.impl.db.DbConector;
+import io.febos.framework.lambda.interceptors.impl.db.DatabaseConnection;
 
-public class CustomConector implements DbConector {
+public class CustomConector implements DatabaseConnection {
     private static String hostDb;
     private static String user;
     private static String pass;
@@ -10,7 +10,7 @@ public class CustomConector implements DbConector {
 
 
     @Override
-    public void conect() {
+    public void connect() {
         System.out.println("STAR CONECTION CUSTOM");
     }
 

@@ -1,10 +1,10 @@
 package io.febos.framework.lambda.interceptors.impl.db;
 
-public interface DbConector {
+public interface DatabaseConnection {
     /**
      * metod init conection
      */
-    public void conect();
+    public void connect();
 
     /**
      * metod close conection

@@ -4,37 +4,37 @@ import java.io.*;
 import java.nio.charset.Charset;
 
 public class StringUtil {
-    private static StringUtil instancia = new StringUtil();
+    private static StringUtil instance = new StringUtil();
 
-    public static StringUtil instancia() {
-        return instancia;
+    public static StringUtil instance() {
+        return instance;
     }
 
     private StringUtil() {
     }
 
-    public String inputStreamEnString(InputStream inputStream){
-        return inputStreamEnString(inputStream,null);
+    public String inputStreamToString(InputStream inputStream){
+        return inputStreamToString(inputStream,null);
     }
-    public String inputStreamEnString(InputStream inputStream,Charset charset){
-        StringBuilder cadena = new StringBuilder();
+    public String inputStreamToString(InputStream inputStream, Charset charset){
+        StringBuilder str = new StringBuilder();
         try (Reader reader = new BufferedReader(new InputStreamReader(inputStream, charset==null?Charset.forName("UTF-8"):charset))) {
             int c = 0;
             while ((c = reader.read()) != -1) {
-                cadena.append((char) c);
+                str.append((char) c);
             }
-            return cadena.toString();
+            return str.toString();
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException();
         }
     }
 
-    public InputStream stringEnInputStream(String cadena){
-        return stringEnInputStream(cadena,null);
+    public InputStream stringToInputStream(String input){
+        return stringToInputStream(input,null);
     }
 
-    public InputStream stringEnInputStream(String cadena, Charset charset){
-        return new ByteArrayInputStream(cadena.getBytes(charset==null?Charset.forName("UTF-8"):charset));
+    public InputStream stringToInputStream(String text, Charset charset){
+        return new ByteArrayInputStream(text.getBytes(charset==null?Charset.forName("UTF-8"):charset));
     }
 }

@@ -13,26 +13,25 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class LaunchHandle {
+public class LaunchHandler {
     private Launcher lanzador;
 
-    public void ejecutar(InputStream inputStream, OutputStream outputStream, Context context) {
+    public void execute(InputStream inputStream, OutputStream outputStream, Context context) {
         lanzador = new AwsLauncher();
         lanzador.execute(inputStream, outputStream, context);
     }
 
-    public Response ejecutar(Request solicitud) {
+    public Response execute(Request solicitud) {
         Gson GSON = new Gson();
         lanzador = new LocalLauncher();
-        InputStream inputStream = StringUtil.instancia().stringEnInputStream(GSON.toJson(solicitud));
+        InputStream inputStream = StringUtil.instance().stringToInputStream(GSON.toJson(solicitud));
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        String solicitudOriginalComoString = GSON.toJson(solicitud);
-        JSONObject solicitudOriginal = new JSONObject(solicitudOriginalComoString);
+        String originalRequestAsString = GSON.toJson(solicitud);
+        JSONObject originalRequestAsObject = new JSONObject(originalRequestAsString);
         lanzador.execute(inputStream, outputStream, null);
         try {
-            String responseasString = new String(outputStream.toByteArray());
-            System.out.println("RESPUESTA EN DURO   "+responseasString);
-            return GSON.fromJson(responseasString, (Class<? extends Response>) Class.forName(solicitudOriginal.getString("responseClass")));
+            String responseAsString = new String(outputStream.toByteArray());
+            return GSON.fromJson(responseAsString, (Class<? extends Response>) Class.forName(originalRequestAsObject.getString("responseClass")));
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             throw new RuntimeException("ERROR");

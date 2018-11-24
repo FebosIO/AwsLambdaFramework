@@ -4,13 +4,7 @@
  * sin el permiso expreso y por escrito de Febos S.A.
  * La detección de un uso no autorizado puede acarrear el inicio de acciones legales.
  */
-package io.febos.framework.lambda.contexto;
+package io.febos.framework.lambda.context;
 
-import com.amazonaws.services.lambda.runtime.Context;
-
-public class ContextLocal implements Contexto{
-
-    public ContextLocal(Context context){
-
-    }
+public interface Context {
 }

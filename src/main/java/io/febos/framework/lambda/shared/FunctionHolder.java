@@ -60,12 +60,12 @@ public class FunctionHolder {
 
         public void context(Context contexto) {
             try {
-                values.put("contexto", contexto);
+                values.put("context", contexto);
             }catch (NullPointerException e){}
         }
 
         public Context context() {
-            return (Context) values.get("contexto");
+            return (Context) values.get("context");
         }
 
 
