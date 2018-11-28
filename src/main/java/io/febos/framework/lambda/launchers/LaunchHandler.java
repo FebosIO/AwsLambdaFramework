@@ -14,7 +14,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class LaunchHandler {
-    private Launcher lanzador;
+    public static Launcher lanzador;
 
     public void execute(InputStream inputStream, OutputStream outputStream, Context context) {
         lanzador = new AwsLauncher();
