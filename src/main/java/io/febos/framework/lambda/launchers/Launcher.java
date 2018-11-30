@@ -16,10 +16,7 @@ import io.febos.framework.lambda.excepcion.LambdaInitException;
 import io.febos.framework.lambda.interceptors.Intercept;
 import io.febos.framework.lambda.interceptors.PostInterceptor;
 import io.febos.framework.lambda.interceptors.PreInterceptor;
-import io.febos.framework.lambda.shared.FunctionHolder;
-import io.febos.framework.lambda.shared.LambdaFunction;
-import io.febos.framework.lambda.shared.Request;
-import io.febos.framework.lambda.shared.Response;
+import io.febos.framework.lambda.shared.*;
 import io.febos.util.StringUtil;
 import org.json.JSONObject;
 
@@ -35,7 +32,12 @@ public abstract class Launcher {
     public static JSONObject originalRequest;
     public static String originalRequestAsString;
     public static com.google.inject.Injector injector = null;
-    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    public static final Gson GSON = new GsonBuilder()
+            .disableHtmlEscaping()
+            .registerTypeHierarchyAdapter(Date.class, new JsonFormatoFechaCompleta())
+            //.registerTypeHierarchyAdapter(Date.class, new JsonFormatoFechaSimple())
+            //.registerTypeHierarchyAdapter(Date.class, new JsonFormatoFechaHora())
+            .create();//;setDateFormat("yyyy-MM-dd HH:mm:ss.SSS").create();
     public static List<PreInterceptor> preInterceptors;
     public static List<PostInterceptor> postInterceptors;
     public static Response response;
