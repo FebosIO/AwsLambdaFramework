@@ -9,8 +9,8 @@ package io.febos.framework.lambda.launchers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.inject.Guice;
-import io.febos.framework.lambda.context.ContextAWS;
 import io.febos.framework.lambda.context.Context;
+import io.febos.framework.lambda.context.ContextAWS;
 import io.febos.framework.lambda.excepcion.LambdaException;
 import io.febos.framework.lambda.excepcion.LambdaInitException;
 import io.febos.framework.lambda.interceptors.Intercept;
@@ -69,6 +69,7 @@ public abstract class Launcher {
                 FunctionHolder.getInstance().response(ex.getResponse());
             } finally {
                 executePostInterceptors();
+                FunctionHolder.getInstance().response().tracingId(Thread.currentThread().getName());
                 responseAsString = GSON.toJson(FunctionHolder.getInstance().response());
             }
             try {
