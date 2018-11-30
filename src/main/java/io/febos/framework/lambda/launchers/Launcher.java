@@ -60,15 +60,20 @@ public abstract class Launcher {
                 FunctionHolder.getInstance().request(GSON.fromJson(originalRequestAsString, injector.getInstance(Request.class).getClass()));
                 FunctionHolder.getInstance().put("requestAsJsonObject", originalRequest);
                 executePreInterceptors();
-                FunctionHolder.getInstance().response(function.execute(FunctionHolder.getInstance().request()));
+                response = function.execute(FunctionHolder.getInstance().request());
+                System.out.println(GSON.toJson(response));
+                FunctionHolder.getInstance().response(response);
             } catch (LambdaException e) {
                 e.printStackTrace();
                 FunctionHolder.getInstance().response(e.getResponse());
+                response=e.getResponse();
+                System.out.println(e.getMessage());
             } catch (Exception e) {
                 e.printStackTrace();
                 LambdaException ex = new LambdaException("CRITICAL_ERROR", e);
                 ex.addError(e.getMessage());
                 FunctionHolder.getInstance().response(ex.getResponse());
+                response=ex.getResponse();
             } finally {
                 executePostInterceptors();
                 FunctionHolder.getInstance().response().tracingId(Thread.currentThread().getName());
