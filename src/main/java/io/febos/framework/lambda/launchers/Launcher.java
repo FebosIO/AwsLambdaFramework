@@ -9,17 +9,14 @@ package io.febos.framework.lambda.launchers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.inject.Guice;
-import io.febos.framework.lambda.context.ContextAWS;
 import io.febos.framework.lambda.context.Context;
+import io.febos.framework.lambda.context.ContextAWS;
 import io.febos.framework.lambda.excepcion.LambdaException;
 import io.febos.framework.lambda.excepcion.LambdaInitException;
 import io.febos.framework.lambda.interceptors.Intercept;
 import io.febos.framework.lambda.interceptors.PostInterceptor;
 import io.febos.framework.lambda.interceptors.PreInterceptor;
-import io.febos.framework.lambda.shared.FunctionHolder;
-import io.febos.framework.lambda.shared.LambdaFunction;
-import io.febos.framework.lambda.shared.Request;
-import io.febos.framework.lambda.shared.Response;
+import io.febos.framework.lambda.shared.*;
 import io.febos.util.StringUtil;
 import org.json.JSONObject;
 
@@ -35,7 +32,12 @@ public abstract class Launcher {
     public static JSONObject originalRequest;
     public static String originalRequestAsString;
     public static com.google.inject.Injector injector = null;
-    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    public static final Gson GSON = new GsonBuilder()
+            .disableHtmlEscaping()
+            .registerTypeHierarchyAdapter(Date.class, new JsonFormatoFechaCompleta())
+            //.registerTypeHierarchyAdapter(Date.class, new JsonFormatoFechaSimple())
+            //.registerTypeHierarchyAdapter(Date.class, new JsonFormatoFechaHora())
+            .create();//;setDateFormat("yyyy-MM-dd HH:mm:ss.SSS").create();
     public static List<PreInterceptor> preInterceptors;
     public static List<PostInterceptor> postInterceptors;
     public static Response response;
@@ -58,17 +60,23 @@ public abstract class Launcher {
                 FunctionHolder.getInstance().request(GSON.fromJson(originalRequestAsString, injector.getInstance(Request.class).getClass()));
                 FunctionHolder.getInstance().put("requestAsJsonObject", originalRequest);
                 executePreInterceptors();
-                FunctionHolder.getInstance().response(function.execute(FunctionHolder.getInstance().request()));
+                response = function.execute(FunctionHolder.getInstance().request());
+                System.out.println(GSON.toJson(response));
+                FunctionHolder.getInstance().response(response);
             } catch (LambdaException e) {
                 e.printStackTrace();
                 FunctionHolder.getInstance().response(e.getResponse());
+                response=e.getResponse();
+                System.out.println(e.getMessage());
             } catch (Exception e) {
                 e.printStackTrace();
                 LambdaException ex = new LambdaException("CRITICAL_ERROR", e);
                 ex.addError(e.getMessage());
                 FunctionHolder.getInstance().response(ex.getResponse());
+                response=ex.getResponse();
             } finally {
                 executePostInterceptors();
+                FunctionHolder.getInstance().response().tracingId(Thread.currentThread().getName());
                 responseAsString = GSON.toJson(FunctionHolder.getInstance().response());
             }
             try {

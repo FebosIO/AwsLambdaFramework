@@ -95,6 +95,7 @@ public class LambdaException extends RuntimeException {
             e.printStackTrace();
             response = new ErrorResponse(message);
         }
+        response.tracingId(Thread.currentThread().getName());
         response.message(message);
         return response;
     }

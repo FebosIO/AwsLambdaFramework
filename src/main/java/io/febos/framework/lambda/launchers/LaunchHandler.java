@@ -14,7 +14,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class LaunchHandler {
-    private Launcher lanzador;
+    public static Launcher lanzador;
 
     public void execute(InputStream inputStream, OutputStream outputStream, Context context) {
         lanzador = new AwsLauncher();
@@ -31,6 +31,7 @@ public class LaunchHandler {
         lanzador.execute(inputStream, outputStream, null);
         try {
             String responseAsString = new String(outputStream.toByteArray());
+            System.out.println("RESPUESTA STRING " + responseAsString);
             return GSON.fromJson(responseAsString, (Class<? extends Response>) Class.forName(originalRequestAsObject.getString("responseClass")));
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
