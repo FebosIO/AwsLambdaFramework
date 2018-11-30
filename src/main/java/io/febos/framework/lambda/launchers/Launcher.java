@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public abstract class Launcher {
@@ -50,6 +51,8 @@ public abstract class Launcher {
     public void execute(InputStream inputStream, OutputStream outputStream, com.amazonaws.services.lambda.runtime.Context context) {
         try {
             String responseAsString = "{}";
+            String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());
+
             try {
                 initContext(context);
                 loadOriginalRequest(inputStream);
@@ -66,17 +69,19 @@ public abstract class Launcher {
             } catch (LambdaException e) {
                 e.printStackTrace();
                 FunctionHolder.getInstance().response(e.getResponse());
-                response=e.getResponse();
+                response = e.getResponse();
                 System.out.println(e.getMessage());
             } catch (Exception e) {
                 e.printStackTrace();
                 LambdaException ex = new LambdaException("CRITICAL_ERROR", e);
                 ex.addError(e.getMessage());
                 FunctionHolder.getInstance().response(ex.getResponse());
-                response=ex.getResponse();
+                response = ex.getResponse();
             } finally {
                 executePostInterceptors();
                 FunctionHolder.getInstance().response().tracingId(Thread.currentThread().getName());
+                FunctionHolder.getInstance().response().time(date);
+
                 responseAsString = GSON.toJson(FunctionHolder.getInstance().response());
             }
             try {
