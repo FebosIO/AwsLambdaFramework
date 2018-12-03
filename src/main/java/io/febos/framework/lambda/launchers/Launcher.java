@@ -52,7 +52,6 @@ public abstract class Launcher {
         try {
             String responseAsString = "{}";
             String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());
-
             try {
                 initContext(context);
                 loadOriginalRequest(inputStream);
@@ -81,7 +80,6 @@ public abstract class Launcher {
                 executePostInterceptors();
                 FunctionHolder.getInstance().response().tracingId(Thread.currentThread().getName());
                 FunctionHolder.getInstance().response().time(date);
-
                 responseAsString = GSON.toJson(FunctionHolder.getInstance().response());
             }
             try {
