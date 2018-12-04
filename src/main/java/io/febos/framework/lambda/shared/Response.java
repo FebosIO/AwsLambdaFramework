@@ -1,6 +1,12 @@
 package io.febos.framework.lambda.shared;
 
+import java.util.Date;
+
 public interface Response {
+    public String time();
+
+    public void time(String duration);
+
     public long duration();
 
     public void duration(long duration);
