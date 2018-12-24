@@ -3,6 +3,7 @@ package io.febos.framework.lambda.excepcion;
 import io.febos.framework.lambda.shared.Response;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ErrorResponse implements Response {
@@ -12,6 +13,17 @@ public class ErrorResponse implements Response {
     public int code;
 
     public String tracingId;
+    private String hora;
+
+    @Override
+    public String time() {
+        return hora;
+    }
+
+    @Override
+    public void time(String hora) {
+        this.hora = hora;
+    }
 
     @Override
     public long duration() {

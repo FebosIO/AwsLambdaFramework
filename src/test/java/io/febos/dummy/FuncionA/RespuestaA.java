@@ -14,6 +14,17 @@ public class RespuestaA implements Response {
 
     public String tracingId;
     public String message;
+    String time;
+
+    @Override
+    public String time() {
+        return time;
+    }
+
+    @Override
+    public void time(String duration) {
+        this.time = time;
+    }
 
     @Override
     public long duration() {
