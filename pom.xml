@@ -20,6 +20,23 @@
         <url>www.febos.io</url>
     </organization>
 
+    <distributionManagement>
+        <snapshotRepository>
+            <id>maven.febos.io</id>
+            <url>s3://maven.febos.io/snapshot</url>
+        </snapshotRepository>
+        <repository>
+            <id>maven.febos.io</id>
+            <url>s3://maven.febos.io/release</url>
+        </repository>
+    </distributionManagement>
+    <repositories>
+        <repository>
+            <id>maven.febos.io</id>
+            <url>s3://maven.febos.io/release</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>com.amazonaws</groupId>
@@ -30,7 +47,7 @@
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-lambda</artifactId>
-            <version>1.11.239</version>
+            <version>1.11.466</version>
             <type>jar</type>
         </dependency>
         <dependency>
