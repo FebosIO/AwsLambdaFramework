@@ -8,12 +8,15 @@ import java.util.List;
 
 public class ErrorResponse implements Response {
 
-    public long duration;
+    public transient long duration;
 
-    public int code;
+    public transient int code;
 
-    public String tracingId;
-    private String hora;
+    public transient String tracingId;
+    public String hora;
+
+    public transient String message;
+    public List<String> errores = new ArrayList<>();
 
     @Override
     public String time() {
@@ -65,8 +68,7 @@ public class ErrorResponse implements Response {
         this.tracingId = tracingId;
     }
 
-    public String message;
-    public List<String> errores = new ArrayList<>();
+
 
     public ErrorResponse() {
     }
