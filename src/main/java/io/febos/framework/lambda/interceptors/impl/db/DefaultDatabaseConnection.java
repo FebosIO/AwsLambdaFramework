@@ -1,5 +1,7 @@
 package io.febos.framework.lambda.interceptors.impl.db;
 
+import io.febos.framework.lambda.config.LogHolder;
+
 class DefaultDatabaseConnection implements DatabaseConnection {
     private static String hostDb;
     private static String user;
@@ -15,16 +17,16 @@ class DefaultDatabaseConnection implements DatabaseConnection {
 
     @Override
     public void connect() {
-        System.out.println("START CONNECTION");
+        LogHolder.info("START CONNECTION");
     }
 
     @Override
     public void close() {
-        System.out.println("CLOSE CONNECTION");
+        LogHolder.info("CLOSE CONNECTION");
     }
 
     @Override
     public void onError() {
-        System.out.println("ON ERROR CONNECTION");
+        LogHolder.info("ON ERROR CONNECTION");
     }
 }

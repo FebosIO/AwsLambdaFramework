@@ -44,7 +44,6 @@ public class FunctionHolder {
         public Request request() {
             return (Request) values.get("request");
         }
-
         public void request(Request request) {
             values.put("request", request);
         }
@@ -75,6 +74,9 @@ public class FunctionHolder {
 
         public void put(String key, Object value) {
             values.put(key, value);
+        }
+
+        public void functionManager() {
         }
     }
 }

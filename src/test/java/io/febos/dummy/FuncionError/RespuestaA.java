@@ -1,28 +1,29 @@
-package io.febos.framework.lambda.excepcion;
+package io.febos.dummy.FuncionError;
 
 import io.febos.framework.lambda.shared.Response;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import javax.inject.Singleton;
 
-public class ErrorResponse implements Response {
+@Singleton
+public class RespuestaA implements Response {
+    public String soloA;
 
     public long duration;
 
     public int code;
 
     public String tracingId;
-    private String hora;
+    public String message;
+    String time;
 
     @Override
     public String time() {
-        return hora;
+        return time;
     }
 
     @Override
-    public void time(String hora) {
-        this.hora = hora;
+    public void time(String duration) {
+        this.time = time;
     }
 
     @Override
@@ -42,7 +43,7 @@ public class ErrorResponse implements Response {
 
     @Override
     public void message(String messaje) {
-        this.message = messaje;
+        this.message = message;
     }
 
     @Override
@@ -63,15 +64,5 @@ public class ErrorResponse implements Response {
     @Override
     public void tracingId(String tracingId) {
         this.tracingId = tracingId;
-    }
-
-    public String message;
-    public List<String> errores = new ArrayList<>();
-
-    public ErrorResponse() {
-    }
-
-    public ErrorResponse(String message) {
-        this.message = message;
     }
 }

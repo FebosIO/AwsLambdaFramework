@@ -11,10 +11,6 @@ import io.febos.framework.lambda.context.ContextAWS;
 import io.febos.framework.lambda.launchers.Launcher;
 
 public class AwsLauncher extends Launcher {
-    static{
-
-
-    }
 
     @Override
     protected void initContext(Context context) {

@@ -6,7 +6,7 @@ import io.febos.framework.lambda.shared.FunctionHolder;
 
 import java.util.Date;
 
-public class Chronometer implements PreInterceptor, PostInterceptor {
+public class Chronometer extends PostInterceptor implements PreInterceptor {
     private static long inicio;
 
     @Override
@@ -15,13 +15,21 @@ public class Chronometer implements PreInterceptor, PostInterceptor {
     }
 
     @Override
-    public void executePostInterceptor() {
+    public void onError() {
+        registrarFinal();
+    }
+
+    @Override
+    public void onSuccess() {
+        registrarFinal();
+    }
+
+    private void registrarFinal() {
         long duracion = new Date().getTime();
         try {
             FunctionHolder.getInstance().response().duration(duracion - inicio);
         } catch (Exception e) {
         }
-
     }
 
 }

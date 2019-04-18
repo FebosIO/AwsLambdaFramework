@@ -1,24 +1,12 @@
 package io.febos.framework.lambda.interceptors.impl.db;
 
-import io.febos.framework.lambda.excepcion.ErrorResponse;
+import io.febos.framework.lambda.config.LogHolder;
 import io.febos.framework.lambda.excepcion.LambdaInitException;
 import io.febos.framework.lambda.interceptors.PostInterceptor;
 import io.febos.framework.lambda.interceptors.PreInterceptor;
-import io.febos.framework.lambda.shared.FunctionHolder;
-import org.reflections.Reflections;
 
-import java.util.Set;
-
-public class ConnectionDb implements PreInterceptor, PostInterceptor {
-    private static Class<? extends DatabaseConnection> connectorClass = DefaultDatabaseConnection.class;
-
-    static {
-        Reflections scanner = new Reflections("io.febos.config");
-        Set<Class<? extends DatabaseConnection>> configClass =scanner.getSubTypesOf(DatabaseConnection.class);
-        if(configClass.iterator().hasNext()){
-            connectorClass =configClass.iterator().next();
-        }
-    }
+public class ConnectionDb extends PostInterceptor implements PreInterceptor {
+    public static Class<? extends DatabaseConnection> connectorClass = DefaultDatabaseConnection.class;
 
     private final DatabaseConnection connector;
 
@@ -26,7 +14,7 @@ public class ConnectionDb implements PreInterceptor, PostInterceptor {
         try {
             connector = connectorClass.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
+            LogHolder.error(e);
             throw new LambdaInitException("Error initializing db connection", e);
         }
     }
@@ -37,11 +25,12 @@ public class ConnectionDb implements PreInterceptor, PostInterceptor {
     }
 
     @Override
-    public void executePostInterceptor() {
-        if (FunctionHolder.getInstance().response() instanceof ErrorResponse) {
-            //call error end
-            connector.onError();
-        }
+    public void onError() {
+        connector.onError();
+    }
+
+    @Override
+    public void onSuccess() {
         connector.close();
     }
 }
