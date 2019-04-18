@@ -65,6 +65,7 @@ public class LogHolder {
     private static void callStaticMetod(String metod, String params) {
         try {
             Method method = loggerClass.getMethod(metod, String.class);
+            method.setAccessible(true);
             method.invoke(null, params);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
