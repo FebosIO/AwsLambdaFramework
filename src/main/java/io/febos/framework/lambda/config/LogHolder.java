@@ -73,6 +73,7 @@ public class LogHolder {
     private static void callStaticMetod(String metod, String s,  Object object) {
         try {
             Method method = loggerClass.getMethod(metod, String.class,  Object.class);
+            method.setAccessible(true);
             method.invoke(null, s,object);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
@@ -81,6 +82,7 @@ public class LogHolder {
     private static void callStaticMetod(String metod, String s, Throwable err, Object object) {
         try {
             Method method = loggerClass.getMethod(metod, String.class, Throwable.class, Object.class);
+            method.setAccessible(true);
             method.invoke(null, s,err,object);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
@@ -89,6 +91,7 @@ public class LogHolder {
     private static void callStaticMetod(String metod, Throwable err) {
         try {
             Method method = loggerClass.getMethod(metod, Throwable.class);
+            method.setAccessible(true);
             method.invoke(null, err);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
