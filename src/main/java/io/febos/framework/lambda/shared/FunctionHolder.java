@@ -42,41 +42,40 @@ public class FunctionHolder {
         private final ConcurrentHashMap<String, Object> values = new ConcurrentHashMap<>();
 
         public Request request() {
-            return (Request) values.get("request");
+            return (Request) getValue(CoreInstanceValues.REQUEST);
         }
+
         public void request(Request request) {
-            values.put("request", request);
+            putValue(CoreInstanceValues.REQUEST, request);
         }
 
 
         public Response response() {
-            return (Response) values.get("response");
+            return (Response) getValue(CoreInstanceValues.RESPONSE);
         }
 
         public void response(Response response) {
-            values.put("response", response);
+            putValue(CoreInstanceValues.RESPONSE, response);
         }
 
         public void context(Context contexto) {
             try {
                 values.put("context", contexto);
-            }catch (NullPointerException e){}
+            } catch (NullPointerException e) {
+            }
         }
 
         public Context context() {
-            return (Context) values.get("context");
+            return (Context) getValue(CoreInstanceValues.CONTEXT);
         }
 
 
-        public Object get(String key) {
-            return values.get(key);
+        public Object getValue(InstanceValuesInterface value) {
+            return values.get(value.getType());
         }
 
-        public void put(String key, Object value) {
-            values.put(key, value);
-        }
-
-        public void functionManager() {
+        public void putValue(InstanceValuesInterface key, Object value) {
+            values.put(key.getType(), value);
         }
     }
 }

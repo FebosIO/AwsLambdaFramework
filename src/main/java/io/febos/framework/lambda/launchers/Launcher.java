@@ -29,6 +29,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
+import static io.febos.framework.lambda.shared.CoreInstanceValues.REQUEST_AS_OBJECT;
+
 public abstract class Launcher {
     public static final Gson GSON = new GsonBuilder().disableHtmlEscaping().registerTypeHierarchyAdapter(Date.class, new JsonFormatoFechaCompleta()).create();
 
@@ -52,7 +54,7 @@ public abstract class Launcher {
                 loadOriginalRequest(inputStream);
                 initFunctionManagerAndConfigure(originalRequest);
                 FunctionHolder.getInstance().request(GSON.fromJson(originalRequestAsString, functionManager().getRequestClass()));
-                FunctionHolder.getInstance().put("requestAsJsonObject", originalRequest);
+                FunctionHolder.getInstance().putValue(REQUEST_AS_OBJECT, originalRequest);
                 functionManager().interceptorManager().executePreInterceptors();
                 LambdaFunction function = functionManager().getLambdaInstance();
                 response = function.execute(FunctionHolder.getInstance().request());
