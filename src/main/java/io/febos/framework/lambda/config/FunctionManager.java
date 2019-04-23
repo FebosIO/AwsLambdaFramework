@@ -10,12 +10,12 @@ import io.febos.framework.lambda.shared.Response;
 import org.json.JSONObject;
 
 public class FunctionManager {
-    private Class<? extends LambdaFunction> lambdaClassHandler;
+    protected Class<? extends LambdaFunction> lambdaClassHandler;
     protected ExceptionManager exceptionManager;
     protected InterceptorManager interceptorManager;
-    private String identifierFunction;
-    private Injector injector;
-    private CustomInjector classFunctionHolder = new CustomInjector();
+    protected String identifierFunction;
+    protected Injector injector;
+    protected CustomInjector classFunctionHolder = new CustomInjector();
 
     public FunctionManager() {
         exceptionManagerInit();
@@ -25,20 +25,18 @@ public class FunctionManager {
 
     public Injector configure(JSONObject requestObject) {
         identifierFunction = requestObject.getString("functionClass").trim();
-        if (CustomInjector.getInyectors().get(identifierFunction) == null) {
-            try {
+        try {
 
-                classFunctionHolder.identifierFunction(identifierFunction);
-                lambdaClassHandler = repareFunctionClass(requestObject);
-                classFunctionHolder.configureFunction(lambdaClassHandler);
-                classFunctionHolder.configureRequest(prepareRequestClass(requestObject));
-                classFunctionHolder.configureResponse(prepareResponseClass(requestObject));
-                CustomInjector.getInyectors().put(identifierFunction, Guice.createInjector(classFunctionHolder));
-            } catch (java.lang.ClassNotFoundException e) {
-                processErrorClasNotFount(e);
-            } catch (Exception e) {
-                processError(e);
-            }
+            classFunctionHolder.identifierFunction(identifierFunction);
+            lambdaClassHandler = repareFunctionClass(requestObject);
+            classFunctionHolder.configureFunction(lambdaClassHandler);
+            classFunctionHolder.configureRequest(prepareRequestClass(requestObject));
+            classFunctionHolder.configureResponse(prepareResponseClass(requestObject));
+            CustomInjector.getInyectors().put(identifierFunction, Guice.createInjector(classFunctionHolder));
+        } catch (java.lang.ClassNotFoundException e) {
+            processErrorClasNotFount(e);
+        } catch (Exception e) {
+            processError(e);
         }
         loadInterceptors();
         injector = CustomInjector.getInyectors().get(identifierFunction);
