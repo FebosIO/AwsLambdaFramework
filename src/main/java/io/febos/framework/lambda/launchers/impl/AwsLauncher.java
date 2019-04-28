@@ -6,19 +6,9 @@
  */
 package io.febos.framework.lambda.launchers.impl;
 
-import com.amazonaws.services.lambda.runtime.Context;
-import io.febos.framework.lambda.context.ContextAWS;
 import io.febos.framework.lambda.launchers.Launcher;
 
 public class AwsLauncher extends Launcher {
-    static{
 
-
-    }
-
-    @Override
-    protected void initContext(Context context) {
-        this.context = new ContextAWS(context);
-    }
 
 }

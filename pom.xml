@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.febos.frameworks</groupId>
     <artifactId>lambda</artifactId>
-    <version>1.4.1</version>
+    <version>2.2.1</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -19,7 +19,6 @@
         <name>Febos S.A.</name>
         <url>www.febos.io</url>
     </organization>
-
     <distributionManagement>
         <snapshotRepository>
             <id>maven.febos.io</id>
@@ -36,7 +35,6 @@
             <url>s3://maven.febos.io/release</url>
         </repository>
     </repositories>
-
     <dependencies>
         <dependency>
             <groupId>com.amazonaws</groupId>
@@ -87,6 +85,5 @@
                 <version>1.2.1</version>
             </extension>
         </extensions>
-
     </build>
 </project>
