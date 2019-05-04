@@ -3,6 +3,7 @@ package io.febos.framework.lambda.launchers;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import io.febos.framework.lambda.config.LogHolder;
 import io.febos.framework.lambda.launchers.impl.AwsLauncher;
 import io.febos.framework.lambda.launchers.impl.LocalLauncher;
 import io.febos.framework.lambda.shared.JsonFormatoFechaCompleta;
@@ -18,12 +19,8 @@ import java.util.Date;
 
 public class LaunchHandler {
     public static Launcher lanzador;
-    public static final Gson GSON = new GsonBuilder()
-            .disableHtmlEscaping()
-            .registerTypeHierarchyAdapter(Date.class, new JsonFormatoFechaCompleta())
-            //.registerTypeHierarchyAdapter(Date.class, new JsonFormatoFechaSimple())
-            //.registerTypeHierarchyAdapter(Date.class, new JsonFormatoFechaHora())
-            .create();
+    public String responseAsString;
+
     public void execute(InputStream inputStream, OutputStream outputStream, Context context) {
         lanzador = new AwsLauncher();
         lanzador.execute(inputStream, outputStream, context);
@@ -38,11 +35,11 @@ public class LaunchHandler {
         JSONObject originalRequestAsObject = new JSONObject(originalRequestAsString);
         lanzador.execute(inputStream, outputStream, null);
         try {
-            String responseAsString = new String(outputStream.toByteArray());
-            System.out.println("RESPUESTA STRING " + responseAsString);
+            responseAsString = new String(outputStream.toByteArray());
+            LogHolder.debug("RESPUESTA STRING " + responseAsString);
             return GSON.fromJson(responseAsString, (Class<? extends Response>) Class.forName(originalRequestAsObject.getString("responseClass")));
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            LogHolder.error(e);
             throw new RuntimeException("ERROR");
         }
     }

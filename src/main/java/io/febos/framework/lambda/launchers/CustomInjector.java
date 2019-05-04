@@ -20,6 +20,7 @@ public class CustomInjector extends AbstractModule {
         return injectors;
     }
 
+    private String identifierFunction;
     private Class function;
     private Class request;
     private Class response;
@@ -41,5 +42,16 @@ public class CustomInjector extends AbstractModule {
 
     public void configureResponse(Class<? extends Response> response) {
         this.response = response;
+    }
+
+    public void identifierFunction(String identifierFunction) {
+        this.identifierFunction=identifierFunction;
+    }
+
+    public Class<? extends Request> request() {
+        return request;
+    }
+    public Class<? extends Response> response() {
+        return response;
     }
 }
