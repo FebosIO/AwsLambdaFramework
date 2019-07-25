@@ -5,10 +5,15 @@ import io.febos.config.CustomConector;
 import io.febos.dummy.FuncionA.SolicitudA;
 import io.febos.framework.lambda.interceptors.impl.db.ConnectionDb;
 import io.febos.framework.lambda.shared.Response;
+import io.febos.util.StringUtil;
 import junit.framework.TestCase;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class LaunchHandleTest {
     public static Gson GSON = new Gson();
@@ -54,5 +59,19 @@ public class LaunchHandleTest {
         TestCase.assertEquals(respuesta.message(),"CRITICAL_ERROR");
         String mensajeError = responseOnj.getJSONArray("errores").getString(0);
         TestCase.assertEquals(mensajeError,"Error initiating Request, Not Found Class");
+    }
+
+
+    @Test
+    public void executeInitRequestError() {
+
+        String request = "{\"prueba\":\"asdas\",\"num\":\"\",\"functionClass\":\""+io.febos.dummy.FuncionError.FuncionA.class.getName()+"\",\"requestClass\":\"a"+io.febos.dummy.FuncionError.SolicitudA.class.getName()+"\",\"responseClass\":\""+io.febos.dummy.FuncionError.RespuestaA.class.getName()+"\"}";
+
+
+        InputStream reqS = StringUtil.instance().stringToInputStream(request);
+        OutputStream out = new ByteArrayOutputStream();
+        LaunchHandler launcher=new LaunchHandler();
+        launcher.execute(reqS,out,null);
+
     }
 }
