@@ -2,9 +2,6 @@ package io.febos.dummy.FuncionError;
 
 import io.febos.framework.lambda.shared.Response;
 
-import javax.inject.Singleton;
-
-@Singleton
 public class RespuestaA implements Response {
     public String soloA;
 

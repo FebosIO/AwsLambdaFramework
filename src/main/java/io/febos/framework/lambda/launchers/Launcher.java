@@ -53,7 +53,7 @@ public abstract class Launcher {
                 initContext(context);
                 loadOriginalRequest(inputStream);
                 initFunctionManagerAndConfigure(originalRequest);
-                FunctionHolder.getInstance().request(GSON.fromJson(originalRequestAsString, functionManager().getRequestClass()));
+                loadRequestClass();
                 FunctionHolder.getInstance().putValue(REQUEST_AS_OBJECT, originalRequest);
                 functionManager().interceptorManager().executePreInterceptors();
                 LambdaFunction function = functionManager().getLambdaInstance();
@@ -82,6 +82,17 @@ public abstract class Launcher {
             }
         } finally {
             FunctionHolder.close();
+        }
+    }
+
+    private void loadRequestClass() {
+        try {
+            FunctionHolder.getInstance().request(GSON.fromJson(originalRequestAsString, functionManager().getRequestClass()));
+        } catch (Exception e){
+            try{
+                LogHolder.error("ERROR LOAD REQUEST",originalRequestAsString);
+            }catch (Exception ex){}
+            throw new LambdaInitException("Error initiating Request", e);
         }
     }
 

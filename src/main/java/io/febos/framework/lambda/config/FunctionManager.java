@@ -4,6 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import io.febos.framework.lambda.excepcion.LambdaInitException;
 import io.febos.framework.lambda.launchers.CustomInjector;
+import io.febos.framework.lambda.shared.FunctionHolder;
 import io.febos.framework.lambda.shared.LambdaFunction;
 import io.febos.framework.lambda.shared.Request;
 import io.febos.framework.lambda.shared.Response;
@@ -34,6 +35,12 @@ public class FunctionManager {
             classFunctionHolder.configureResponse(prepareResponseClass(requestObject));
             CustomInjector.getInyectors().put(identifierFunction, Guice.createInjector(classFunctionHolder));
         } catch (java.lang.ClassNotFoundException e) {
+
+            try {
+                LogHolder.error("ERROR LOAD REQUEST", requestObject.toString());
+            } catch (Exception ex) {
+            }
+
             processErrorClasNotFount(e);
         } catch (Exception e) {
             processError(e);
