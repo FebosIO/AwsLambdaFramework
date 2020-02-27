@@ -5,6 +5,8 @@ import io.febos.framework.lambda.interceptors.impl.db.ConnectionDb;
 import io.febos.framework.lambda.shared.LambdaFunction;
 import io.febos.framework.lambda.interceptors.*;
 
+import java.util.Date;
+
 
 @Intercept(clazz = Chronometer.class)
 @Intercept(clazz = ConnectionDb.class)
@@ -18,6 +20,7 @@ public class FuncionA extends LambdaFunction<SolicitudA, RespuestaA> {
     public RespuestaA execute(SolicitudA request) {
         RespuestaA respuesta = new RespuestaA();
         respuesta.soloA = "solo aaa!!";
+        respuesta.date = new Date();
         try {
             Thread.sleep(400);
         } catch (InterruptedException e) {

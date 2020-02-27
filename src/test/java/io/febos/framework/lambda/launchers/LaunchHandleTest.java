@@ -1,14 +1,9 @@
 package io.febos.framework.lambda.launchers;
 
-import com.google.gson.Gson;
-import io.febos.config.CustomConector;
-import io.febos.dummy.FuncionA.SolicitudA;
-import io.febos.framework.lambda.interceptors.impl.db.ConnectionDb;
 import io.febos.framework.lambda.shared.Response;
 import io.febos.util.StringUtil;
 import junit.framework.TestCase;
 import org.json.JSONObject;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -16,7 +11,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class LaunchHandleTest {
-    public static Gson GSON = new Gson();
 
 
     @Test
@@ -28,8 +22,7 @@ public class LaunchHandleTest {
         req.setPrueba("asdas");
         LaunchHandler launcher=new LaunchHandler();
         Response respuesta = launcher.execute(req);
-        JSONObject responseOnj=new JSONObject(launcher.responseAsString);
-        System.out.println(GSON.toJson(respuesta));
+        System.out.println(LaunchHandler.lanzador.GSON.toJson(respuesta));
     }
 
     @Test

@@ -27,8 +27,11 @@ public class JsonFormatoFechaCompleta extends TypeAdapter<Date> {
     @Override
     public void write(JsonWriter writer, Date t) throws IOException {
         try {
-            //SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-            writer.value(t.toString());
+            if(t!=null) {
+                writer.value(SDF.format(t));
+            }else{
+                writer.nullValue();
+            }
         } catch (Exception e) {
             writer.nullValue();
         }

@@ -32,7 +32,7 @@ import java.util.UUID;
 import static io.febos.framework.lambda.shared.CoreInstanceValues.REQUEST_AS_OBJECT;
 
 public abstract class Launcher {
-    public static final Gson GSON = new GsonBuilder().disableHtmlEscaping().registerTypeHierarchyAdapter(Date.class, new JsonFormatoFechaCompleta()).create();
+    public static  Gson GSON = new GsonBuilder().disableHtmlEscaping().registerTypeHierarchyAdapter(Date.class, new JsonFormatoFechaCompleta()).create();
 
     public Context context;
     public JSONObject originalRequest;
@@ -58,7 +58,7 @@ public abstract class Launcher {
                 functionManager().interceptorManager().executePreInterceptors();
                 LambdaFunction function = functionManager().getLambdaInstance();
                 response = function.execute(FunctionHolder.getInstance().request());
-                System.out.println(GSON.toJson(response));
+                LogHolder.debug(GSON.toJson(response));
                 FunctionHolder.getInstance().response(response);
             } catch (LambdaException e) {
                 response = functionManager().exceptionManager().processError(e);
@@ -73,7 +73,7 @@ public abstract class Launcher {
                 functionManager().interceptorManager().executePostInterceptors(endWhitError);
                 FunctionHolder.getInstance().response().tracingId(Thread.currentThread().getName());
                 FunctionHolder.getInstance().response().time(date);
-                responseAsString = GSON.toJson(FunctionHolder.getInstance().response());
+                responseAsString = GSON.toJson(response);
             }
             try {
                 outputStream.write(responseAsString.getBytes(StandardCharsets.UTF_8));
