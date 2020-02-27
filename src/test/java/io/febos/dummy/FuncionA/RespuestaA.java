@@ -2,12 +2,15 @@ package io.febos.dummy.FuncionA;
 
 import io.febos.framework.lambda.shared.Response;
 
+import java.util.Date;
+
 public class RespuestaA implements Response {
     public String soloA;
 
     public long duration;
 
     public int code;
+    public Date date;
 
     public String tracingId;
     public String message;

@@ -10,6 +10,10 @@ public class ConnectionDb extends PostInterceptor implements PreInterceptor {
 
     private final DatabaseConnection connector;
 
+    public DatabaseConnection getConnector() {
+        return connector;
+    }
+
     public ConnectionDb() {
         try {
             connector = connectorClass.newInstance();
