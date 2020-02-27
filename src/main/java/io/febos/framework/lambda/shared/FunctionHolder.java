@@ -6,7 +6,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class FunctionHolder {
 
-
     private static final FunctionHolder INSTANCE = new FunctionHolder();
     private final ConcurrentHashMap<String, ConcurrentValues> threads = new ConcurrentHashMap<>();
     private static final ConcurrentHashMap<String, Object> config = new ConcurrentHashMap<>();
@@ -39,6 +38,7 @@ public class FunctionHolder {
     }
 
     public class ConcurrentValues {
+        private Response response=null;
         private final ConcurrentHashMap<String, Object> values = new ConcurrentHashMap<>();
 
         public Request request() {
@@ -51,11 +51,13 @@ public class FunctionHolder {
 
 
         public Response response() {
-            return (Response) getValue(CoreInstanceValues.RESPONSE);
+            return response;
+//            return (Response) getValue(CoreInstanceValues.RESPONSE);
         }
 
         public void response(Response response) {
-            putValue(CoreInstanceValues.RESPONSE, response);
+//            putValue(CoreInstanceValues.RESPONSE, response);
+            this.response=response;
         }
 
         public void context(Context contexto) {

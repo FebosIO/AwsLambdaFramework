@@ -17,6 +17,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
 
+import static io.febos.framework.lambda.launchers.Launcher.GSON;
+
 public class LaunchHandler {
     public static Launcher lanzador;
     public String responseAsString;
@@ -27,7 +29,6 @@ public class LaunchHandler {
     }
 
     public Response execute(Request solicitud) {
-        Gson GSON = new Gson();
         lanzador = new LocalLauncher();
         InputStream inputStream = StringUtil.instance().stringToInputStream(GSON.toJson(solicitud));
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
