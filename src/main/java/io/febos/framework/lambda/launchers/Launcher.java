@@ -37,7 +37,7 @@ public abstract class Launcher {
     public Context context;
     public JSONObject originalRequest;
     public String originalRequestAsString;
-    private static FunctionManager functionManager = new FunctionManager();
+    protected static FunctionManager functionManager = new FunctionManager();
     public static Response response;
 
     public Launcher() {
@@ -87,7 +87,7 @@ public abstract class Launcher {
         }
     }
 
-    private void loadRequestClass() {
+    protected void loadRequestClass() {
         try {
             FunctionHolder.getInstance().request(GSON.fromJson(originalRequestAsString, functionManager().getRequestClass()));
         } catch (Exception e){
