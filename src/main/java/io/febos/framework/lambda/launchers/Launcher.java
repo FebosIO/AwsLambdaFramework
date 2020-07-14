@@ -58,7 +58,6 @@ public abstract class Launcher {
                 functionManager().interceptorManager().executePreInterceptors();
                 LambdaFunction function = functionManager().getLambdaInstance();
                 response = function.execute(FunctionHolder.getInstance().request());
-                LogHolder.debug("RESPONSE 1");
                 FunctionHolder.getInstance().response(response);
                 LogHolder.debug(GSON.toJson(FunctionHolder.getInstance().response()));
             } catch (LambdaException e) {
@@ -74,8 +73,7 @@ public abstract class Launcher {
                 functionManager().interceptorManager().executePostInterceptors(endWhitError);
                 FunctionHolder.getInstance().response().tracingId(Thread.currentThread().getName());
                 FunctionHolder.getInstance().response().time(date);
-//                responseAsString = GSON.toJson(response);
-                responseAsString = GSON.toJson(FunctionHolder.getInstance().response());
+                responseAsString = functionManager().responseAsString();
             }
             try {
                 outputStream.write(responseAsString.getBytes(StandardCharsets.UTF_8));

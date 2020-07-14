@@ -4,6 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import io.febos.framework.lambda.excepcion.LambdaInitException;
 import io.febos.framework.lambda.launchers.CustomInjector;
+import io.febos.framework.lambda.launchers.Launcher;
 import io.febos.framework.lambda.shared.FunctionHolder;
 import io.febos.framework.lambda.shared.LambdaFunction;
 import io.febos.framework.lambda.shared.Request;
@@ -48,6 +49,11 @@ public class FunctionManager {
         loadInterceptors();
         injector = CustomInjector.getInyectors().get(identifierFunction);
         return injector;
+    }
+
+    public String responseAsString() {
+        String responseAsString = Launcher.GSON.toJson(FunctionHolder.getInstance().response());
+        return responseAsString;
     }
 
     protected void interceptorManagerInit() {
