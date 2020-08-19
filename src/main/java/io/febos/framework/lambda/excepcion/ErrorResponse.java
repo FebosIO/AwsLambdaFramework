@@ -8,9 +8,9 @@ import java.util.List;
 
 public class ErrorResponse implements Response {
 
-    public long duration;
+    public Long duration;
 
-    public int code;
+    public Integer code;
 
     public String tracingId;
     private String hora;
