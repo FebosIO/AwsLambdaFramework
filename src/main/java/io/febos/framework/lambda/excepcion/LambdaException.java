@@ -17,15 +17,7 @@ import java.util.Set;
  * @author Michel Munoz <michel@febos.cl>
  */
 public class LambdaException extends RuntimeException {
-    private static Class<? extends ErrorResponse> errorClass = ErrorResponse.class;
-
-    static {
-        Reflections scanner = new Reflections("io.febos.config");
-        Set<Class<? extends ErrorResponse>> configClass = scanner.getSubTypesOf(ErrorResponse.class);
-        if (configClass.iterator().hasNext()) {
-            errorClass = configClass.iterator().next();
-        }
-    }
+    protected static Class<? extends ErrorResponse> errorClass = ErrorResponse.class;
 
     protected ErrorResponse response;
 
@@ -40,14 +32,14 @@ public class LambdaException extends RuntimeException {
     public LambdaException(String menssage, Throwable e) {
         super(menssage, e);
         this.response = getErrorInstance(menssage);
-        ((ErrorResponse) this.response).message = menssage;
+        this.response.message(menssage);
     }
 
     public LambdaException(String menssage, int code, Throwable e) {
         super(menssage, e);
         this.response = getErrorInstance(menssage);
         this.response.code(code);
-        ((ErrorResponse) this.response).message(menssage);
+        this.response.message(menssage);
     }
 
 
