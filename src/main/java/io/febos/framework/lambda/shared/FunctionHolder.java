@@ -77,7 +77,11 @@ public class FunctionHolder {
         }
 
         public void putValue(InstanceValuesInterface key, Object value) {
-            values.put(key.getType(), value);
+            if (value != null) {
+                values.put(key.getType(), value);
+            } else {
+                values.remove(key.getType());
+            }
         }
     }
 }
