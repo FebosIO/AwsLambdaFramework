@@ -6,9 +6,15 @@
  */
 package io.febos.framework.lambda.launchers.impl;
 
+import com.amazonaws.services.lambda.runtime.Context;
 import io.febos.framework.lambda.launchers.Launcher;
 
 public class AwsLauncher extends Launcher {
-
-
+    @Override
+    protected void initContext(Context context) {
+        super.initContext(context);
+        if(context != null && context.getAwsRequestId() != null && !context.getAwsRequestId().isEmpty()){
+            Thread.currentThread().setName(context.getAwsRequestId());
+        }
+    }
 }
