@@ -119,6 +119,11 @@ public abstract class Launcher {
     }
 
     protected void initContext(com.amazonaws.services.lambda.runtime.Context context) {
+        try{
+            if(context != null && context.getAwsRequestId() != null && !context.getAwsRequestId().isEmpty()){
+                Thread.currentThread().setName(context.getAwsRequestId());
+            }
+        }catch (Exception e){}
         FunctionHolder.getInstance().context(context);
         this.context = new ContextAWS(context);
     }
